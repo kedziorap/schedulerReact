@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Teams from '../../components/Teams/Teams'
 
 class App extends Component {
     state = {
@@ -11,7 +12,7 @@ class App extends Component {
     }
     render() {
         return (
-            null
+            <Teams teams={this.state.teams}/>
         )
     }
 }

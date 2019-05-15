@@ -34,7 +34,7 @@ class App extends Component {
             <Aux>
                 <Form/>
                 <Teams teams={this.state.teams}/>
-                <TimeTable schedule={this.state.testSchedule}/>
+                <TimeTable schedule={this.state.testSchedule} teams={this.state.teams}/>
             </Aux>
         )
     }

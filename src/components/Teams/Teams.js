@@ -13,6 +13,7 @@ const Teams = props => {
     return (  
         <Aux>
             <h1>Teams</h1>
+            <p>Teams in league: {props.teams.length}</p>
             <ul>
                 {teams}
             </ul>

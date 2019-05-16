@@ -6,45 +6,32 @@ import TimeTable from '../../components/TimeTable/TimeTable'
 
 class App extends Component {
     state = {
-        teams: [1,2,3,4,5,6],
+        teams: [],
         teamsInGame: [
-            {id: 1, name: 'Juventus'},
-            {id: 2, name: 'Barcelona'},
-            {id: 3, name: 'Manchester City'},
-            {id: 4, name: 'Bayern'},
-            {id: 5, name: 'PSG'},
-            {id: 6, name: 'Ajax'},
+            {id: 10, name: 'Juventus'},
+            {id: 20, name: 'Barcelona'},
+            {id: 30, name: 'Manchester City'},
+            {id: 40, name: 'Bayern'},
+            {id: 50, name: 'PSG'},
+            {id: 60, name: 'Ajax'},
         ],
-        testSchedule: [
-            [
-                {home: 1, away: 6},
-                {home: 2, away: 5},
-                {home: 3, away: 4}
-            ],
-            [
-                {home: 6, away: 4},
-                {home: 5, away: 3},
-                {home: 1, away: 2}
-            ],
-            [
-                {home: 2, away: 6},
-                {home: 3, away: 1},
-                {home: 4, away: 5}
-            ],
-            [
-                {home: 6, away: 5},
-                {home: 1, away: 4},
-                {home: 2, away: 3}
-            ],
-            [
-                {home: 3, away: 6},
-                {home: 4, away: 2},
-                {home: 5, away: 1}
-            ]
-            
-        ],
-        schedule: [[{a:'chuj'}],[],[],[],[]],
+        schedule: [],
         isScheduled: false
+    }
+    mixIt= (tab) => {
+        const toChange = tab.slice();
+        const resultTab = [];
+        for (let i = 0, size = tab.length; i < size; i++) {
+            const draw = Math.floor(Math.random()*toChange.length);
+            resultTab.push(toChange[draw]);
+            toChange.splice(draw, 1);
+        }
+        return resultTab;
+}
+    setTeamsInSchedule = () => {
+        const teamsToGet = this.state.teamsInGame.map(team => team.id);
+        const teams = this.mixIt(teamsToGet);
+        this.setState({teams}, ()=>this.generateMatchdays())
     }
     generateMatchdays = () => {
         const amountTeam = this.state.teams.length - 1;
@@ -52,7 +39,7 @@ class App extends Component {
         for (let i = 0; i < amountTeam; i++) {
             schedule.push([]);
         }
-        console.log(schedule);
+        this.setState({schedule}, ()=>this.oddMatchday())
     }
     evenMatchday = () => {
         const schedule = this.state.schedule.map(arr => arr.map(match => Object.assign({}, match)));
@@ -61,7 +48,13 @@ class App extends Component {
         const away = this.state.teams.slice(amountTeam/2).reverse();
         home.unshift(away.shift());
         away.push(home.pop());
-        this.setState({teams: [...home, ...away]})
+        this.addMatchToMatchday(home, away, amountTeam-3, schedule);
+        for (var i = amountTeam - 5; i > 0; i -= 2) {
+            home.splice(1,0,away.shift());
+            away.push(home.pop());
+            this.addMatchToMatchday(home, away, i, schedule);
+        }
+        this.setState({schedule})
     }
     oddMatchday = () => {
         const schedule = this.state.schedule.map(arr => arr.map(match => Object.assign({}, match)));
@@ -74,10 +67,9 @@ class App extends Component {
             home.push(away.pop());
             this.addMatchToMatchday(home, away, i, schedule);
         }
-        this.setState((prevState, state)=>({schedule}))
+        this.setState((prevState, state)=>({schedule}), ()=>this.evenMatchday())
     }
     addMatchToMatchday = (homeTeam, awayTeam, nrMatchday, schedule ) => {
-        //const schedule = this.state.schedule.map(arr => arr.map(match => Object.assign({}, match)));
         const matchDay = [];
         for (var i = 0; i < homeTeam.length; i++) {
             matchDay.push({home: homeTeam[i],away: awayTeam[i]});
@@ -90,7 +82,7 @@ class App extends Component {
             <Aux>
                 <Form/>
                 <Teams teams={this.state.teamsInGame}/>
-                <button onClick={this.oddMatchday}>Generate schedule</button>
+                <button onClick={this.setTeamsInSchedule}>Generate schedule</button>
                 <TimeTable schedule={this.state.schedule} teams={this.state.teamsInGame}/>
             </Aux>
         )

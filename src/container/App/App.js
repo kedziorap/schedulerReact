@@ -3,20 +3,26 @@ import Teams from '../../components/Teams/Teams'
 import Form from '../../components/Form/Form'
 import Aux from '../../hoc/Auxiliry'
 import TimeTable from '../../components/TimeTable/TimeTable'
+import uuid from 'uuid'
 
 class App extends Component {
     state = {
         teams: [],
-        teamsInGame: [
-            {id: 10, name: 'Juventus'},
-            {id: 20, name: 'Barcelona'},
-            {id: 30, name: 'Manchester City'},
-            {id: 40, name: 'Bayern'},
-            {id: 50, name: 'PSG'},
-            {id: 60, name: 'Ajax'},
-        ],
+        teamsInGame: [],
+        text: '',
         schedule: [],
         isScheduled: false
+    }
+    textChangeHandler = event => {
+        const text = event.target.value;
+        this.setState({text});
+    }
+    addTeam = ()=> {
+        const name = this.state.text;
+        const teamsInGame = this.state.teamsInGame;
+        const team = {id: uuid.v4(), name: name};
+        teamsInGame.push(team);
+        this.setState({teamsInGame, text: ''})
     }
     mixIt= (tab) => {
         const toChange = tab.slice();
@@ -27,9 +33,10 @@ class App extends Component {
             toChange.splice(draw, 1);
         }
         return resultTab;
-}
+    }
     setTeamsInSchedule = () => {
         const teamsToGet = this.state.teamsInGame.map(team => team.id);
+        if (teamsToGet.length % 2) teamsToGet.push(0)
         const teams = this.mixIt(teamsToGet);
         this.setState({teams}, ()=>this.generateMatchdays())
     }
@@ -75,15 +82,19 @@ class App extends Component {
             matchDay.push({home: homeTeam[i],away: awayTeam[i]});
         }
         schedule[nrMatchday]=matchDay;
-        console.log('schedule', schedule);
+        //console.log('schedule', schedule);
     }
     render() {
         return (
             <Aux>
-                <Form/>
+                <Form 
+                    text={this.state.text} 
+                    changer={this.textChangeHandler}
+                    add={this.addTeam}
+                />
                 <Teams teams={this.state.teamsInGame}/>
                 <button onClick={this.setTeamsInSchedule}>Generate schedule</button>
-                <TimeTable schedule={this.state.schedule} teams={this.state.teamsInGame}/>
+                <TimeTable schedule={this.state.schedule} teams={this.state.teamsInGame} teamsList={this.state.teams}/>
             </Aux>
         )
     }

@@ -141,7 +141,6 @@ class App extends Component {
                 <div className={css.Title}>
                     <img src={icon} alt="logo"/>
                     <h1>League Scheduler</h1>
-                    <button onClick={this.rematch}>Rmeatch</button>
                 </div>
                 <div className={css.Half}>
                 <Form 

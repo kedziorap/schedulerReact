@@ -14,17 +14,12 @@
     max-width: 40px;
     margin-right: 10px;
 }
-.Button {
-    padding: 10px;
-    background-color: rgb(146, 153, 255);
-    border-radius: 3px;
-    font-weight: bold;
-    font-size: 1.3em;
-    border: none;
-    box-shadow: 0 0 10px 0 black;
+.Half {
+    width: 100%;
 }
-.Button:disabled {
-    background: rgb(217, 219, 255);
-    color: #888;
-    cursor: not-allowed;
+
+@media(min-width: 800px) {
+    .Half {
+        width: 50%;
+    }
 }

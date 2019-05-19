@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Teams from '../../components/Teams/Teams'
 import Form from '../../components/Form/Form'
-//import Aux from '../../hoc/Auxiliry'
 import TimeTable from '../../components/TimeTable/TimeTable'
 import uuid from 'uuid'
 import css from './App.module.css'
@@ -118,19 +117,27 @@ class App extends Component {
     render() {
         return (
             <div className={css.App}>
-            <div className={css.Title}>
-                <img src={icon} alt="logo"/>
-                <h1>League Scheduler</h1>
-            </div>
+                <div className={css.Title}>
+                    <img src={icon} alt="logo"/>
+                    <h1>League Scheduler</h1>
+                </div>
+                <div className={css.Half}>
                 <Form 
                     text={this.state.text} 
                     changer={this.textChangeHandler}
                     add={this.addTeam}
                     showKey={this.showKey}
                 />
-                <Teams teams={this.state.teamsInGame} remove={this.removeTeam} clear={this.clearTeams}/>
-                <button className={css.Button} onClick={this.setTeamsInSchedule} disabled={(this.state.teamsInGame.length < 2) ? true : false}>Generate schedule</button>
-                {this.state.schedule.length ? <TimeTable schedule={this.state.schedule} teams={this.state.teamsInGame} teamsList={this.state.teams}/>: null}
+                <Teams 
+                    teams={this.state.teamsInGame} 
+                    remove={this.removeTeam} 
+                    clear={this.clearTeams}/>
+                </div>
+                 <TimeTable
+                    click={this.setTeamsInSchedule}
+                    schedule={this.state.schedule} 
+                    teams={this.state.teamsInGame} 
+                    teamsList={this.state.teams}/>
             </div>
         )
     }

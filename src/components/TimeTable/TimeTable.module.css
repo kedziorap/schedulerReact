@@ -2,3 +2,24 @@
     width: 100%;
     text-align: center;
 }
+
+.Button {
+    padding: 10px;
+    background-color: rgb(146, 153, 255);
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 1.3em;
+    border: none;
+    box-shadow: 0 0 10px 0 black;
+}
+.Button:disabled {
+    background: rgb(217, 219, 255);
+    color: #888;
+    cursor: not-allowed;
+}
+
+@media(min-width: 800px) {
+    .TimeTable {
+        width: 50%;
+    }
+}

@@ -10,17 +10,14 @@ class App extends Component {
     state = {
         teams: [],
         teamsInGame: [
-            {id:1, name: 'Barcelona'},
-            {id:2, name: 'Liverpool'},
-            {id:3, name: 'Mnchester City'},
-            {id:4, name:'Borussia Dortmund'},
-            {id:5, name: 'PSG'},
-            {id:6, name: 'FC Porto'},
-            {id:7, name: 'Real Madryt'},
         ],
         text: '',
         schedule: [],
+        rematch: false,
         isScheduled: false
+    }
+    toggleCheck =() => {
+        this.setState(prev => {return {rematch: !prev.rematch}});
     }
     removeSchedule = () => {
         this.setState({
@@ -60,6 +57,24 @@ class App extends Component {
         }
         return resultTab;
     }
+    rematch = () => {
+        const teamAmount = this.state.teamsInGame.length;
+        const schedule = this.state.schedule.slice();
+        const amount = schedule.length;
+        for (let i = 0; i < amount; i ++) {
+            const matchday = [];
+            for (let j = 0; j < teamAmount/2; j++) {
+                const match = {
+                    home: schedule[i][j].away,
+                    away: schedule[i][j].home
+                }
+                matchday.push(match)
+            }
+            schedule.push(matchday)
+        }
+        this.setState({schedule})
+   
+    }
     setTeamsInSchedule = () => {
         const teamsToGet = this.state.teamsInGame.map(team => team.id);
         if (teamsToGet.length > 1) {
@@ -92,7 +107,13 @@ class App extends Component {
             away.push(home.pop());
             this.addMatchToMatchday(home, away, i, schedule);
         }
-        this.setState({schedule})
+        this.setState({schedule}, ()=>{
+            if (this.state.rematch) {
+                console.log('hej')
+                this.rematch();
+            }
+        })
+        
     }
     oddMatchday = () => {
         const schedule = this.state.schedule.map(arr => arr.map(match => Object.assign({}, match)));
@@ -120,6 +141,7 @@ class App extends Component {
                 <div className={css.Title}>
                     <img src={icon} alt="logo"/>
                     <h1>League Scheduler</h1>
+                    <button onClick={this.rematch}>Rmeatch</button>
                 </div>
                 <div className={css.Half}>
                 <Form 
@@ -134,6 +156,8 @@ class App extends Component {
                     clear={this.clearTeams}/>
                 </div>
                  <TimeTable
+                    toggleRematch={this.toggleCheck}
+                    rematch={this.state.rematch}
                     click={this.setTeamsInSchedule}
                     schedule={this.state.schedule} 
                     teams={this.state.teamsInGame} 

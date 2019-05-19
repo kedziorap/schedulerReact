@@ -8,6 +8,9 @@ const TimeTable = props => {
     return (
         <div className={css.TimeTable}>
         <button className={css.Button} onClick={props.click} disabled={(props.teams.length < 2) ? true : false}>Generate schedule</button>
+        <div className={css.Rematch}>
+            <input type="checkbox" id="check" checked={props.rematch} onChange={props.toggleRematch}/> <label htmlFor="check">Rematch</label>
+        </div>
         {props.schedule.length ? <Aux>
             <h2>Timetable:</h2>
             {matchdays}

@@ -17,6 +17,10 @@
     color: #888;
     cursor: not-allowed;
 }
+.Rematch {
+    margin: 10px 0;
+    user-select: none;
+}
 
 @media(min-width: 800px) {
     .TimeTable {

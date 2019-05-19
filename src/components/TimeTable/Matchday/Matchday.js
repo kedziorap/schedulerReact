@@ -1,5 +1,6 @@
 import React from 'react'
 import Match from './Match/Match'
+import css from './Matchday.module.css'
 
 const Matchday = props => {
     const matchesFromProps = props.matches.slice();
@@ -13,8 +14,8 @@ const Matchday = props => {
     }
     const matches = matchesCheck.map((match, id) => <Match key={id} home={match.home} away={match.away} teams={props.teams}/>)
     return (
-        <table>
-            <thead><tr><td colSpan="3">Matchday {props.day}</td></tr></thead>
+        <table className={css.Table}>
+            <thead><tr><td colSpan="3"><h3>Matchday {props.day}</h3></td></tr></thead>
             <tbody>
             {matches}
             </tbody>

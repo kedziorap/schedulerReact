@@ -1,28 +1,55 @@
 import React, { Component } from 'react'
 import Teams from '../../components/Teams/Teams'
 import Form from '../../components/Form/Form'
-import Aux from '../../hoc/Auxiliry'
+//import Aux from '../../hoc/Auxiliry'
 import TimeTable from '../../components/TimeTable/TimeTable'
 import uuid from 'uuid'
+import css from './App.module.css'
+import icon from '../../assets/calendar.png'
 
 class App extends Component {
     state = {
         teams: [],
-        teamsInGame: [],
+        teamsInGame: [
+            {id:1, name: 'Barcelona'},
+            {id:2, name: 'Liverpool'},
+            {id:3, name: 'Mnchester City'},
+            {id:4, name:'Borussia Dortmund'},
+            {id:5, name: 'PSG'},
+            {id:6, name: 'FC Porto'},
+            {id:7, name: 'Real Madryt'},
+        ],
         text: '',
         schedule: [],
         isScheduled: false
+    }
+    removeSchedule = () => {
+        this.setState({
+            schedule: [],
+            isScheduled: false
+        });
+    }
+    removeTeam = (id) => {
+        const teams = this.state.teamsInGame;
+        const teamsInGame = teams.filter(el => el.id !== id);
+        this.setState({teamsInGame}, ()=>this.removeSchedule());
     }
     textChangeHandler = event => {
         const text = event.target.value;
         this.setState({text});
     }
+    clearTeams = () => {
+        this.setState({teamsInGame: [], schedule:[]})
+    }
     addTeam = ()=> {
         const name = this.state.text;
-        const teamsInGame = this.state.teamsInGame;
+        if (name.trim() !== '') {
+            const teamsInGame = this.state.teamsInGame.slice();
         const team = {id: uuid.v4(), name: name};
         teamsInGame.push(team);
         this.setState({teamsInGame, text: ''})
+        this.removeSchedule()
+        }
     }
     mixIt= (tab) => {
         const toChange = tab.slice();
@@ -36,9 +63,11 @@ class App extends Component {
     }
     setTeamsInSchedule = () => {
         const teamsToGet = this.state.teamsInGame.map(team => team.id);
-        if (teamsToGet.length % 2) teamsToGet.push(0)
+        if (teamsToGet.length > 1) {
+            if (teamsToGet.length % 2) teamsToGet.push(0)
         const teams = this.mixIt(teamsToGet);
         this.setState({teams}, ()=>this.generateMatchdays())
+        }
     }
     generateMatchdays = () => {
         const amountTeam = this.state.teams.length - 1;
@@ -47,6 +76,9 @@ class App extends Component {
             schedule.push([]);
         }
         this.setState({schedule}, ()=>this.oddMatchday())
+    }
+    showKey = e => {
+        if (e.charCode === 13) this.addTeam();
     }
     evenMatchday = () => {
         const schedule = this.state.schedule.map(arr => arr.map(match => Object.assign({}, match)));
@@ -82,20 +114,24 @@ class App extends Component {
             matchDay.push({home: homeTeam[i],away: awayTeam[i]});
         }
         schedule[nrMatchday]=matchDay;
-        //console.log('schedule', schedule);
     }
     render() {
         return (
-            <Aux>
+            <div className={css.App}>
+            <div className={css.Title}>
+                <img src={icon} alt="logo"/>
+                <h1>League Scheduler</h1>
+            </div>
                 <Form 
                     text={this.state.text} 
                     changer={this.textChangeHandler}
                     add={this.addTeam}
+                    showKey={this.showKey}
                 />
-                <Teams teams={this.state.teamsInGame}/>
-                <button onClick={this.setTeamsInSchedule}>Generate schedule</button>
-                <TimeTable schedule={this.state.schedule} teams={this.state.teamsInGame} teamsList={this.state.teams}/>
-            </Aux>
+                <Teams teams={this.state.teamsInGame} remove={this.removeTeam} clear={this.clearTeams}/>
+                <button className={css.Button} onClick={this.setTeamsInSchedule} disabled={(this.state.teamsInGame.length < 2) ? true : false}>Generate schedule</button>
+                {this.state.schedule.length ? <TimeTable schedule={this.state.schedule} teams={this.state.teamsInGame} teamsList={this.state.teams}/>: null}
+            </div>
         )
     }
 }

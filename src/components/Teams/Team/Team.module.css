@@ -1,0 +1,13 @@
+.Team {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px;
+    width: 100%;
+    font-size: 1.1em;
+}
+.TeamButton {
+    background-color: rgb(240, 136, 141);
+    border: none;
+    padding: 3px;
+}

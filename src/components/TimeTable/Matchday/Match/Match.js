@@ -1,20 +1,21 @@
 import React from 'react'
-import Aux from '../../../../hoc/Auxiliry';
+import Aux from '../../../../hoc/Auxiliry'
+import css from './Match.module.css'
 
 const Match = props => {
     const home = props.teams.find(el => el.id === props.home);
     const away = props.teams.find(el => el.id === props.away);
     let result;
     if (home && away) {
-        result = <tr>
+        result = <tr className={css.Match}>
             <td>{home.name}</td>
-            <td>vs.</td>
+            <td>-</td>
             <td>{away.name}</td>
         </tr>
     } else if (!home && away) {
-        result=<tr><td>Pause: {away.name} </td></tr>
+        result=<tr><td colSpan="3">pause: <strong>{away.name}</strong> </td></tr>
     }  else if (!away && home){
-        result=<tr><td>Pause: {home.name} </td></tr>
+        result=<tr><td colSpan="3">pause: <strong>{home.name}</strong> </td></tr>
     } else {
         result = null;
     }

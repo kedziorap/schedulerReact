@@ -1,0 +1,15 @@
+.Match {
+    font-weight: bold;
+}
+.Match td:first-of-type {
+    text-align: right;
+    width: 50%;
+}
+.Match td:last-of-type {
+    text-align: left;
+    width: 50%;
+}
+.Match td:nth-of-type(2) {
+    font-weight: 400;
+    width: 30px;
+}

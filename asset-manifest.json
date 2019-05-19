@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/schedulerReact/static/css/main.f4cb43d5.chunk.css",
+    "main.js": "/schedulerReact/static/js/main.621dc13c.chunk.js",
+    "main.js.map": "/schedulerReact/static/js/main.621dc13c.chunk.js.map",
+    "runtime~main.js": "/schedulerReact/static/js/runtime~main.6c799e0a.js",
+    "runtime~main.js.map": "/schedulerReact/static/js/runtime~main.6c799e0a.js.map",
+    "static/js/2.82613950.chunk.js": "/schedulerReact/static/js/2.82613950.chunk.js",
+    "static/js/2.82613950.chunk.js.map": "/schedulerReact/static/js/2.82613950.chunk.js.map",
+    "index.html": "/schedulerReact/index.html",
+    "precache-manifest.d70d981490129ab415306626b147affe.js": "/schedulerReact/precache-manifest.d70d981490129ab415306626b147affe.js",
+    "service-worker.js": "/schedulerReact/service-worker.js",
+    "static/css/main.f4cb43d5.chunk.css.map": "/schedulerReact/static/css/main.f4cb43d5.chunk.css.map"
+  }
+}
